@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OBRA APP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #e9e8fc;
+    }
+    header {
+      background-color: #005296;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    .intro {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .filtros, .avaliacoes {
+      margin-bottom: 1rem;
+    }
+    .filtros select {
+      padding: 0.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .card {
+      background: white;
+      margin-bottom: 1rem;
+      padding: 1.5rem;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .card img {
+      width: 100%;
+      max-width: 150px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    .card strong {
+      font-size: 1.2rem;
+    }
+    .avaliacao {
+      color: #f39c12;
+    }
+    .btn {
+      margin-top: 1rem;
+      padding: 0.7rem;
+      background-color: #005296;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #003b70;
+    }
+    .perfil {
+      display: none;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .comentario {
+      background: #eef1f6;
+      padding: 0.8rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .comentario strong {
+      color: #333;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem 0.5rem;
+      }
+    }
+
+    /* Estilo para tela de login */
+    #login-container input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    #login-container button {
+      width: 100%;
+      padding: 0.7rem;
+      background: #005296;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #login-container button:hover {
+      background-color: #003b70;
+    }
+    #login-container a {
+      color: #005296;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Scroll suave */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TELA DE LOGIN -->
+  <div id="login-container" style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;">
+    <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px;">
+      <h2>Entrar</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="senha" placeholder="Senha" />
+      <button onclick="fazerLogin()">Entrar</button>
+      <p style="margin-top: 1rem; font-size: 0.9rem;">
+        Não tem conta? <a onclick="mostrarCadastro()">Cadastrar</a><br>
+        Esqueceu a senha? <a onclick="recuperarSenha()">Redefinir</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div id="site" style="display: none;">
+
+    <header>
+      <h1>OBRA APP</h1>
+      <p>Conectando você ao melhor profissional da construção civil</p>
+    </header>
+
+    <div class="container">
+      <div class="intro">
+        <h2>Bem-vindo!</h2>
+        <p>Escolha abaixo a categoria desejada e veja os profissionais disponíveis com avaliações e especialidades.</p>
+      </div>
+
+      <div class="filtros">
+        <label for="categoria">Filtrar por categoria:</label>
+        <select id="categoria" onchange="filtrarProfissionais()">
+          <option value="todos">Todos</option>
+          <option value="pedreiro">Pedreiro</option>
+          <option value="eletricista">Eletricista</option>
+          <option value="encanador">Encanador</option>
+          <option value="pintor">Pintor</option>
+        </select>
+      </div>
+
+      <div id="lista-profissionais"></div>
+      <div id="perfil" class="perfil"></div>
+    </div>
+  </div>
+
+  <script>
+    // Tela de login simples
+    function fazerLogin() {
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      // Simulação de login (você pode trocar por validação real depois)
+      if (email === 'teste@obra.com' && senha === '123456') {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('site').style.display = 'block';
+      } else {
+        alert('Email ou senha inválidos.');
+      }
+    }
+
+    function mostrarCadastro() {
+      alert('Cadastro ainda não implementado. (Aqui você pode abrir outro formulário)');
+    }
+
+    function recuperarSenha() {
+      const email = prompt("Digite seu email para redefinir a senha:");
+      if (email) {
+        alert(`Enviamos um link para ${email}.`);
+      }
+    }
+
+    // Dados dos profissionais
+    const profissionais = [
+      {
+        nome: "Carlos Silva",
+        categoria: "pedreiro",
+        avaliacao: 4.8,
+        especialidade: "Assentamento de piso",
+        imagem: "https://randomuser.me/api/portraits/men/32.jpg",
+        comentarios: ["Excelente trabalho!", "Muito profissional."],
+        telefone: "(11) 91234-5678"
+      },
+      {
+        nome: "Fernanda Luz",
+        categoria: "eletricista",
+        avaliacao: 4.6,
+        especialidade: "Instalações residenciais",
+        imagem: "https://randomuser.me/api/portraits/women/44.jpg",
+        comentarios: ["Rápida e eficiente."],
+        telefone: "(11) 92345-6789"
+      },
+      {
+        nome: "João Mendes",
+        categoria: "encanador",
+        avaliacao: 4.7,
+        especialidade: "Hidráulica de banheiro",
+        imagem: "https://randomuser.me/api/portraits/men/45.jpg",
+        comentarios: ["Resolveu meu problema na hora!"],
+        telefone: "(11) 93456-7890"
+      },
+      {
+        nome: "Rafael Torres",
+        categoria: "pintor",
+        avaliacao: 4.9,
+        especialidade: "Pintura decorativa",
+        imagem: "https://randomuser.me/api/portraits/men/38.jpg",
+        comentarios: ["Ótimo acabamento.", "Trabalho limpo e rápido."],
+        telefone: "(11) 94567-8901"
+      }
+    ];
+
+    function filtrarProfissionais() {
+      document.getElementById("perfil").style.display = 'none';
+      const categoria = document.getElementById("categoria").value;
+      const lista = document.getElementById("lista-profissionais");
+      lista.innerHTML = '';
+
+      const filtrados = categoria === 'todos'
+        ? profissionais
+        : profissionais.filter(p => p.categoria === categoria);
+
+      if (filtrados.length === 0) {
+        lista.innerHTML = '<p>Nenhum profissional encontrado nessa categoria.</p>';
+        return;
+      }
+
+      filtrados.forEach(p => {
+        const card = `
+          <div class="card">
+            <img src="${p.imagem}" alt="Foto de ${p.nome}" />
+            <strong>${p.nome}</strong>
+            <p class="avaliacao">${p.avaliacao} ⭐</p>
+            <p>Especialidade: ${p.especialidade}</p>
+            <button class="btn" onclick="abrirPerfil('${p.nome}')">Ver perfil</button>
+          </div>
+        `;
+        lista.innerHTML += card;
+      });
+    }
+
+    function abrirPerfil(nome) {
+      const prof = profissionais.find(p => p.nome === nome);
+      const perfil = document.getElementById("perfil");
+      perfil.style.display = 'block';
+      perfil.innerHTML = `
+        <button class="btn" onclick="voltar()">⬅ Voltar</button>
+        <h2>${prof.nome}</h2>
+        <img src="${prof.imagem}" alt="Foto de ${prof.nome}" style="max-width:150px;border-radius:8px;"/>
+        <p><strong>Especialidade:</strong> ${prof.especialidade}</p>
+        <p><strong>Telefone:</strong> ${prof.telefone}</p>
+        <div class="comentarios">
+          <h3>Comentários:</h3>
+          ${prof.comentarios.map(comentario => `
+            <div class="comentario">
+              <strong>Cliente:</strong> ${comentario}
+            </div>
+          `).join('')}
+        </div>
+      `;
+      document.getElementById('perfil').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function voltar() {
+      document.getElementById("perfil").style.display = 'none';
+      document.getElementById("lista-profissionais").style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
